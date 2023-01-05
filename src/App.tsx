@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import DetailsPage from './pages/DetailsPage';
+import { match } from './types/type';
+import { DATA } from './data';
 
-function App() {
+const App = () => {
+  const [currentMatch, setCurrentMatch] = useState<match>(DATA[0]);
+  const [bet, setBet] = useState<string | null>(null)
+
+  const changeCurrentMatch = (match: match): void => {
+    setCurrentMatch(match)
+  }
+  const changeSelectBet = (newBet: string | null): void => {
+    setBet(newBet)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path='/' element={
+      <HomePage 
+        bet={bet}
+        changeSelectBet={changeSelectBet}
+        currentMatch={currentMatch} 
+        changeCurrentMatch = {changeCurrentMatch} 
+      />} />
+      <Route path='/details' element={
+      <DetailsPage
+        match={currentMatch}
+        changeSelectBet={changeSelectBet}
+      />} />
+    </Routes>
   );
 }
 
